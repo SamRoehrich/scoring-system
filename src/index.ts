@@ -18,7 +18,7 @@ import { createClient } from "async-redis";
   async function startTimer() {
     publisher.publish("scoring:events", "START");
     await publisher.set("timer:minutes", "4");
-    await publisher.set("timer:seconds", "00");
+    await publisher.set("timer:seconds", "0");
     tick();
   }
 
@@ -26,7 +26,7 @@ import { createClient } from "async-redis";
     let minutes: any = await redisClient.get("timer:minutes");
     let seconds: any = await redisClient.get("timer:seconds");
     publisher.publish("scoring:timer", `${minutes}: ${seconds}`);
-    if (seconds === "00") {
+    if (seconds === "0") {
       if (minutes === "0") {
         await timerReset();
       }
@@ -35,9 +35,7 @@ import { createClient } from "async-redis";
         await redisClient.set("timer:seconds", "59");
       }
     } else {
-      parseInt(seconds) > 9
-        ? await redisClient.set("timer:seconds", String(seconds - 1))
-        : await redisClient.set("timer:seconds", `0${String(seconds)}`);
+      await redisClient.set("timer:seconds", String(seconds - 1));
     }
     setTimeout(tick, 1000);
     return "";
@@ -45,7 +43,7 @@ import { createClient } from "async-redis";
 
   async function timerReset() {
     await redisClient.set("timer:minutes", "4");
-    await redisClient.set("timer:seconds", "00");
+    await redisClient.set("timer:seconds", "0");
   }
 
   wss.on("connection", function connection(ws) {
