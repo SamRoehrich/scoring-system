@@ -1,7 +1,7 @@
 import express from "express";
 import http from "http";
 import { Server } from "ws";
-import { createClient } from 'redis'
+import { createClient, RedisClient } from 'redis'
 
 interface Time {
   minutes: number
@@ -9,13 +9,18 @@ interface Time {
 }
 
 (async () => {
-
+  
   const app = express();
   const server = http.createServer(app);
   const wss = new Server({ server });
   const redisClient = createClient();
+  
+  // check if there is an error connection to the redis client
+  redisClient.on("error", function(error) {
+    console.log(error)
+  })
 
-  const tick = (time: Time) => {
+  const tick = (time: Time, publisher: RedisClient) => {
     let newTime: Time = { minutes: 0, seconds: 0}
     if(time.seconds === 0) {
       if(time.minutes === 0) {
@@ -26,39 +31,41 @@ interface Time {
     } else {
       newTime = {...time, seconds: time.seconds - 1}
     }
-    redisClient.publish("scoring:timer", `${time.minutes}: ${time.seconds}`)
-    let ticker = setInterval(tick(newTime), 1000)
-    redisClient.on("message", function(_chanel, message) {
-      if(message === "STOP") {
-        clearInterval(ticker)
-      }
-    })
-    return ""
+    publisher.publish("scoring:timer", `${newTime.minutes}: ${newTime.seconds}`)
+    // let ticker = setInterval(tick(newTime, publisher), 1000)
+    // publisher.on("message", function(_chanel, message) {
+    //   if(message === "STOP") {
+    //     clearInterval(ticker)
+    //   }
+    // })
+    return ''
   }
-
+  
   function startTimer() {
-    redisClient.subscribe("scoring:events")
-    redisClient.publish("scoring:events", "START")
+    const publisher = createClient()
+    publisher.publish("scoring:events", "START")
     let time = { 
       minutes: 4,
       seconds: 0
     }
-
-    tick(time)
+    tick(time, publisher)
   }
-
-  redisClient.on("error", function(error) {
-    console.log(error)
-  })
 
   
   wss.on("connection", function connection(ws) {
+    console.log("Client connected")
+    // on websocket connection, sub to scoring chanels
     redisClient.subscribe("scoring:timer")
     redisClient.subscribe("scoring:events")
+
+    // on chanel message, send message over websocket
     redisClient.on("message", function(_chanel, message) {
       ws.send(message)
     })
+
+    // on message sent over websockets
     ws.on("message", function incoming(message) {
+      // if message is the START command start the timer
       if(message === "START") {
         startTimer()
       }
@@ -68,7 +75,6 @@ interface Time {
         }
       })
     });
-    ws.send("something");
   });
   server.listen(8080);
 })();
