@@ -1,0 +1,32 @@
+// , function(err) {
+//     if(err){
+//       console.log("Error setting Minutes: " + err )
+//     } else {
+//       redisClient.get("timer:minutes", function(err, mins) {
+//         if(err) {
+//           console.log("Error getting Minutes: " + err)
+//         } else {
+//           console.log("Worked: " + mins)
+//         }
+//       })
+//     }
+//   })
+
+
+
+    // redisClient.get("timer:minutes", function(err, value) {
+    //   if(err) {
+    //     console.log("Error getting Minutes:" + err)
+    //   } else {
+    //     let minutes = value
+    //     console.log(minutes)
+    //   }
+    // })
+    // redisClient.get("timer:seconds", function(err, value) {
+    //   if(err) {
+    //     console.log("Error getting seconds: " + err)
+    //   } else {
+    //     let seconds = value
+    //     console.log(seconds)
+    //   }
+    // })
