@@ -1,0 +1,42 @@
+[
+  {
+    "name": "default",
+    "type": "postgres",
+    "host": "localhost",
+    "username": "postgres",
+    "password": "root",
+    "database": "local-281-test",
+    "synchronize": true,
+    "logging": true,
+    "entities": ["entities/**/*.ts"],
+    "migrations": ["src/migration/**/*.ts"],
+    "subscribers": ["src/subscriber/**/*.ts"],
+    "cli": {
+      "entitiesDir": "src/entity",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
+    }
+  },
+  {
+    "name": "production",
+    "type": "postgres",
+    "host": "ec2-54-157-4-216.compute-1.amazonaws.com",
+    "username": "bydcbomtpeaxwv",
+    "password": "0333b5862167ec84cb4021789ec1af56af63fe4da3d643beffe22839623f37ef",
+    "port": 5432,
+    "database": "dflebeal1odq7i",
+    "extra": {
+      "ssl": true
+    },
+    "synchronize": true,
+    "logging": true,
+    "entities": ["src/entity/**/*.ts"],
+    "migrations": ["src/migration/**/*.ts"],
+    "subscribers": ["src/subscriber/**/*.ts"],
+    "cli": {
+      "entitiesDir": "src/entity",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
+    }
+  }
+]
