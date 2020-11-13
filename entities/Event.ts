@@ -3,8 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   Entity,
-  OneToOne,
-  JoinColumn,
+  ManyToOne,
 } from "typeorm";
 import { EventManager } from "./EventManager";
 
@@ -22,8 +21,7 @@ export class Event extends BaseEntity {
   @Column()
   eventDate: string;
 
-  @OneToOne((_type) => EventManager)
-  @JoinColumn()
+  @ManyToOne((_type) => EventManager)
   managerID: EventManager;
 
   @Column()

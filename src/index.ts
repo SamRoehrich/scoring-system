@@ -64,15 +64,19 @@ import startTimer from "../timer/StartTimer";
     });
   });
 
+  // app midlleware
   app.use(cors());
   app.use(express.json());
 
+  // base API routes
   app.use("/event", EventRoutes);
   app.use("/admin", AdminRoutes);
 
+  // http server
   app.listen(5000, () => {
-    console.log("HTTP server starts");
+    console.log("HTTP server started");
   });
-  // start server on port 8080
+
+  // start WS server on port 8080
   server.listen(8080);
 })();

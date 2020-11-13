@@ -1,4 +1,11 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Event } from "./Event";
 
 @Entity()
 export class Climber extends BaseEntity {
@@ -6,11 +13,20 @@ export class Climber extends BaseEntity {
   climberID: number;
 
   @Column()
-  C_First_Name: string;
+  climberFirstName: string;
 
   @Column()
-  C_Last_Name: string;
+  climberLastName: string;
 
   @Column()
   ageCat: string;
+
+  @Column()
+  gender: string;
+
+  @ManyToOne(
+    (_type) => Event,
+    (event) => event.eventID
+  )
+  event: Event;
 }
