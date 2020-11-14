@@ -2,10 +2,14 @@
   {
     "name": "default",
     "type": "postgres",
-    "host": "localhost",
-    "username": "postgres",
-    "password": "root",
-    "database": "local-281-test",
+    "host": "ec2-3-224-97-209.compute-1.amazonaws.com",
+    "username": "ozjddibjewtxgi",
+    "password": "3b2759280d4bafd64bfd13cc1c9e084348a1631b7b7e43271b71e3065d30294e",
+    "database": "d1732c6dqpc8g0",
+    "port": 5432,
+    "extra": {
+      "ssl": true
+    },
     "synchronize": true,
     "logging": true,
     "entities": ["entities/**/*.ts"],

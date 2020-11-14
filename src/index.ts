@@ -7,6 +7,8 @@ import cors from "cors";
 import { createClient } from "async-redis";
 import startTimer from "../timer/StartTimer";
 
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
+
 (async () => {
   // initialize servers
   const app = express();
@@ -19,19 +21,17 @@ import startTimer from "../timer/StartTimer";
   const dbConnectionOptions = await getConnectionOptions(process.env.NODE_ENV);
 
   // connect to database
-  process.env.NODE_ENV === "production"
-    ? await createConnection({
-        ...dbConnectionOptions,
-        url:
-          "    postgres://bydcbomtpeaxwv:0333b5862167ec84cb4021789ec1af56af63fe4da3d643beffe22839623f37ef@ec2-54-157-4-216.compute-1.amazonaws.com:5432/dflebeal1odq7i",
-        name: "default",
-        extra: {
-          ssl: {
-            rejeectUnauthorized: true,
-          },
-        },
-      } as any)
-    : await createConnection();
+  await createConnection({
+    ...dbConnectionOptions,
+    url:
+      "    postgres://ozjddibjewtxgi:3b2759280d4bafd64bfd13cc1c9e084348a1631b7b7e43271b71e3065d30294e@ec2-3-224-97-209.compute-1.amazonaws.com:5432/d1732c6dqpc8g0",
+    name: "default",
+    extra: {
+      ssl: {
+        rejeectUnauthorized: false,
+      },
+    },
+  } as any);
 
   // init redis client
   const redisClient = createClient();
