@@ -21,17 +21,7 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
   const dbConnectionOptions = await getConnectionOptions(process.env.NODE_ENV);
 
   // connect to database
-  await createConnection({
-    ...dbConnectionOptions,
-    url:
-      "    postgres://ozjddibjewtxgi:3b2759280d4bafd64bfd13cc1c9e084348a1631b7b7e43271b71e3065d30294e@ec2-3-224-97-209.compute-1.amazonaws.com:5432/d1732c6dqpc8g0",
-    name: "default",
-    extra: {
-      ssl: {
-        rejeectUnauthorized: false,
-      },
-    },
-  } as any);
+  await createConnection({ ...dbConnectionOptions });
 
   // init redis client
   const redisClient = createClient();
